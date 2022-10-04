@@ -33,7 +33,7 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     public ResponseVO update(Aluno aluno) {
-        return Optional.of(repository.save(aluno)).map(Response::success).orElse(Response.error().getDetalhe());
+        return Optional.of(repository.save(aluno)).map(Response::success).orElse(null);
     }
 
     @Override

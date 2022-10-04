@@ -11,9 +11,6 @@ public class Response {
         return new DetalheErro();
     }
 
-    public static ErrorResponse error(Object data) {
-        return ErrorResponse.of(data);
-    }
 
     public static ResponseVO success(Object data) {
         return SuccessResponse.of(data);
@@ -25,9 +22,7 @@ public class Response {
             this.responseVO = new ResponseVO(null, data);
         }
 
-        public static ErrorResponse of(Object data) {
-            return new com.jnunes.springcloud.suport.response.ErrorResponse(data);
-        }
+
 
         public ResponseVO notFound() {
             return new ResponseVO(Utils.getMessage("response.id.not.found"), null);
