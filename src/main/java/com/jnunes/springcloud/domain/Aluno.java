@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
@@ -25,9 +25,9 @@ public class Aluno extends EntityS {
 
     private String telefone;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(name = "alunos_cursos", joinColumns = @JoinColumn(name = "aluno_fk"),
         inverseJoinColumns = @JoinColumn(name = "curso_fk"))
-    private Set<Curso> cursos = new HashSet<>();
+    private Set<Curso> cursos = new LinkedHashSet<>();
 
 }

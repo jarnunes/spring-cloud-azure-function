@@ -13,15 +13,13 @@ import java.time.LocalDate;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(indexes = {@Index(columnList = "titulo, data_inicio", unique = true, name = "UK_titulo_datainicio")})
-
 public class Curso extends EntityS{
 
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CargaHoraria cargaHoraria;
+    private Integer cargaHoraria;
 
     @Column(name = "data_inicio")
     @JsonFormat(pattern = "dd/MM/yyyy")

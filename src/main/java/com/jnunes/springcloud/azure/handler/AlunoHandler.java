@@ -1,7 +1,8 @@
 package com.jnunes.springcloud.azure.handler;
 
-import com.jnunes.springcloud.azure.handler.utils.AlunoHandlerUtils;
+import com.jnunes.springcloud.azure.handler.utils.HandlerUtils;
 import com.jnunes.springcloud.domain.Aluno;
+import com.jnunes.springcloud.domain.EntityS;
 import com.jnunes.springcloud.suport.response.ResponseVO;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
@@ -22,7 +23,7 @@ public class AlunoHandler extends FunctionInvoker<Object, ResponseVO> {
                     methods = {HttpMethod.GET},
                     authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Long>> request,
             ExecutionContext context) {
-        return handleRequest(AlunoHandlerUtils.getQueryParameters(request, "id"), context);
+        return handleRequest(HandlerUtils.getQueryParameters(request, "id"), context);
     }
 
     @FunctionName("alunoSave")
@@ -31,7 +32,7 @@ public class AlunoHandler extends FunctionInvoker<Object, ResponseVO> {
                     methods = {HttpMethod.POST},
                     authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Aluno>> request,
             ExecutionContext context) {
-        return handleRequest(AlunoHandlerUtils.getAluno(request), context);
+        return handleRequest(HandlerUtils.getAluno(request), context);
     }
 
 
@@ -50,7 +51,7 @@ public class AlunoHandler extends FunctionInvoker<Object, ResponseVO> {
                     methods = {HttpMethod.PUT},
                     authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Aluno>> request,
             ExecutionContext context) {
-        return handleRequest(AlunoHandlerUtils.getAluno(request), context);
+        return handleRequest(HandlerUtils.getAluno(request), context);
     }
 
     @FunctionName("alunoDelete")

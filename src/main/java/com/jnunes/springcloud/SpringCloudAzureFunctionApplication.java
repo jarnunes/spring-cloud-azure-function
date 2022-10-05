@@ -14,4 +14,18 @@ public class SpringCloudAzureFunctionApplication {
         SpringApplication.run(SpringCloudAzureFunctionApplication.class, args);
     }
 
+//    @Autowired
+//    CursoServiceImpl cursoService;
+//
+//    @Bean
+//    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+//        return args -> {
+//            Curso curso = new Curso();
+//            curso.setTitulo("Bosta");
+//            curso.setDataInicio(LocalDate.now());
+//            curso.setCargaHoraria(20);
+//            cursoService.save(curso);
+//            System.out.println("Curso salvo com sucesso!");
+//        };
+//    }
 }

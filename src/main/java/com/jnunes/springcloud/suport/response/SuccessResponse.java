@@ -8,15 +8,29 @@ public class SuccessResponse extends BaseResponse {
         this.responseVO = new ResponseVO(null, data);
     }
 
-    public static ResponseVO of(Object data) {
+    public static SuccessResponse of(Object data) {
         SuccessResponse successResponse = new SuccessResponse(data);
         successResponse.responseVO.setData(data);
-        successResponse.responseVO.setMessage(Utils.getMessage("response.status.success.get"));
-        return successResponse.responseVO;
+        return successResponse;
     }
 
-    public ResponseVO success() {
+    public ResponseVO get() {
         this.responseVO.setMessage(Utils.getMessage("response.status.success.get"));
         return this.responseVO;
     }
+
+    public ResponseVO post() {
+        this.responseVO.setMessage(Utils.getMessage("response.status.success.post"));
+        return this.responseVO;
+    }
+    public ResponseVO put() {
+        this.responseVO.setMessage(Utils.getMessage("response.status.success.put"));
+        return this.responseVO;
+    }
+
+    public ResponseVO delete() {
+        this.responseVO.setMessage(Utils.getMessage("response.status.success.delete"));
+        return this.responseVO;
+    }
+
 }
