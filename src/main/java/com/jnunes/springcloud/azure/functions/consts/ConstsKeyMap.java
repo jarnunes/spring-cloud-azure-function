@@ -1,4 +1,4 @@
-package com.jnunes.springcloud.azure.functions;
+package com.jnunes.springcloud.azure.functions.consts;
 
 public class ConstsKeyMap {
 

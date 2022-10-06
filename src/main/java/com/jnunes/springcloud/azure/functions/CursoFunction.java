@@ -1,31 +1,25 @@
 package com.jnunes.springcloud.azure.functions;
 
-import com.google.gson.Gson;
+import com.jnunes.springcloud.azure.functions.consts.FunctionConsts;
 import com.jnunes.springcloud.domain.Curso;
 import com.jnunes.springcloud.service.CursoServiceImpl;
-import com.jnunes.springcloud.suport.DateUtils;
 import com.jnunes.springcloud.suport.Utils;
 import com.jnunes.springcloud.suport.response.ResponseVO;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.function.json.GsonMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 
 import static com.jnunes.springcloud.suport.response.StatusCode.*;
-import static com.jnunes.springcloud.azure.functions.ConstsKeyMap.*;
 
 @Configuration
 public class CursoFunction {
@@ -37,12 +31,12 @@ public class CursoFunction {
 
     @Bean("cursoSave")
     public Function<Curso, ResponseVO> save() {
-        return curso ->  service.save(curso);
+        return curso -> service.save(curso);
     }
 
     @Bean("cursoGet")
-    public Function<Long, ResponseVO> get() {
-        return idCurso -> service.get(idCurso);
+    public Function<Map<String, String>, ResponseVO> get() {
+        return map -> service.get(FunctionConsts.of(map).getIdReferencia());
     }
 
     @Bean("cursoUpdate")
@@ -62,19 +56,20 @@ public class CursoFunction {
 
     private ResponseVO montarLista(Map<String, String> map) {
 
-        Long idReferencia = Utils.toLongOrNull(map.get(ID_REFERENCIA));
-        Integer numeroRegistros = Utils.toIntOrNull(map.get(NUMERO_REGISTROS));
+        Long idReferencia = FunctionConsts.of(map).getIdReferencia();
+        Integer numeroRegistros = FunctionConsts.of(map).getNumeroRegistros();
         if (ObjectUtils.allNotNull(idReferencia, numeroRegistros)) {
             return obterCursosPorId(idReferencia, numeroRegistros);
         }
 
-        LocalDate dataInicioReferencia = DateUtils.toLocalDate(map.get(DATA_INICIO_REFERENCIA));
-        LocalDate dataFimReferencia = DateUtils.toLocalDate(map.get(DATA_FIM_REFERENCIA));
+        LocalDate dataInicioReferencia = FunctionConsts.of(map).getDataInicioReferencia();
+        LocalDate dataFimReferencia = FunctionConsts.of(map).getDataFimReferencia();
         if (ObjectUtils.allNotNull(dataInicioReferencia, dataFimReferencia)) {
             return obterCursosPorDataReferencia(dataInicioReferencia, dataFimReferencia);
         }
 
-        String titulo = StringUtils.trimToNull(map.get(TITULO));
+
+        String titulo = FunctionConsts.of(map).getTitulo();
         if (StringUtils.isNotEmpty(titulo)) {
             return obterCursosPorTitulo(titulo);
         }
@@ -109,7 +104,7 @@ public class CursoFunction {
             return response;
         }
 
-        response.setMessage(Utils.getMessage("response.cursos.nao.encontrado.por.parametro"));
+        response.setMessage(Utils.getMessage("cursos.nao.encontrado.por.parametro"));
         response.setStatusCode(RECORD_NOT_FOUND);
         return response;
     }

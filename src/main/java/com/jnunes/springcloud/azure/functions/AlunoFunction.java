@@ -1,5 +1,6 @@
 package com.jnunes.springcloud.azure.functions;
 
+import com.jnunes.springcloud.azure.functions.consts.FunctionConsts;
 import com.jnunes.springcloud.domain.Aluno;
 import com.jnunes.springcloud.service.AlunoServiceImpl;
 import com.jnunes.springcloud.suport.response.ResponseVO;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
 import java.util.function.Function;
 
 @Configuration
@@ -21,8 +23,8 @@ public class AlunoFunction {
     }
 
     @Bean("alunoGet")
-    public Function<Long, ResponseVO> get() {
-        return idAluno -> service.get(idAluno);
+    public Function<Map<String, String>, ResponseVO> get() {
+        return map -> service.get(FunctionConsts.of(map).getIdReferencia());
     }
 
     @Bean("alunoUpdate")

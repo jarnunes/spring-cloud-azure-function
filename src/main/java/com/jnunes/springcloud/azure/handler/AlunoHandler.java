@@ -34,14 +34,13 @@ public class AlunoHandler extends FunctionInvoker<Object, ResponseVO> {
         return handleRequest(HandlerUtils.getAluno(request), context);
     }
 
-
     @FunctionName("alunoGet")
     public ResponseVO get(
             @HttpTrigger(name = "alunoGetRequest",
                     methods = {HttpMethod.GET},
                     authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<String>> request,
-            @BindingName("id") Long idAluno, ExecutionContext context) {
-        return handleRequest(idAluno, context);
+            final ExecutionContext context) {
+        return handleRequest(request.getQueryParameters(), context);
     }
 
     @FunctionName("alunoUpdate")
