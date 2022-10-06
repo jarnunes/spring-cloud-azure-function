@@ -2,7 +2,6 @@ package com.jnunes.springcloud.azure.handler;
 
 import com.jnunes.springcloud.azure.handler.utils.HandlerUtils;
 import com.jnunes.springcloud.domain.Aluno;
-import com.jnunes.springcloud.domain.EntityS;
 import com.jnunes.springcloud.suport.response.ResponseVO;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;

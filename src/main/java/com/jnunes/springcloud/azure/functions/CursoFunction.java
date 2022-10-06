@@ -3,10 +3,15 @@ package com.jnunes.springcloud.azure.functions;
 import com.jnunes.springcloud.domain.Curso;
 import com.jnunes.springcloud.service.CursoServiceImpl;
 import com.jnunes.springcloud.suport.response.ResponseVO;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Configuration
@@ -36,8 +41,27 @@ public class CursoFunction {
     }
 
     @Bean("cursoList")
-    public Function<Long, ResponseVO> list() {
-        return idCurso -> service.list(idCurso);
+    public Function<Map<String, String>, ResponseVO> list() {
+        return this::montarLista;
     }
 
+    private ResponseVO montarLista(Map<String, String> mapa) {
+        Map<String, Object> myMap = new HashMap<>();
+
+        myMap.put("name", mapa.get("name").concat("Concatenado caralho"));
+        myMap.put("idade", toIntOrNull(mapa.get("idade")));
+        myMap.put("idInicial", toIntOrNull(mapa.get("idInicial")));
+        myMap.put("idFinal", toIntOrNull(mapa.get("idFinal")));
+        return new ResponseVO(null, 23, myMap, null);
+    }
+
+    private Integer toIntOrNull(String value) {
+        return Optional.ofNullable(value).map(StringUtils::trimToNull)
+                .map(this::getDigitos).map(Integer::parseInt).orElse(null);
+    }
+
+    private String getDigitos(String strValue) {
+        return Optional.ofNullable(strValue)
+                .map(str -> str.replaceAll("\\D", StringUtils.EMPTY)).orElse(null);
+    }
 }

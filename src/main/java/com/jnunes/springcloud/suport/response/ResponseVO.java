@@ -14,9 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 public class ResponseVO {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
-    private Integer code;
+    private Integer statusCode;
     private Object data;
 
 

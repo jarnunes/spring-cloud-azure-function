@@ -3,13 +3,13 @@ package com.jnunes.springcloud.suport.response;
 
 import com.jnunes.springcloud.suport.Utils;
 
-public class SuccessResponse extends BaseResponse {
-    private SuccessResponse(Object data) {
+public class Success extends BaseResponse {
+    private Success(Object data) {
         this.responseVO = new ResponseVO(null, data);
     }
 
-    public static SuccessResponse of(Object data) {
-        SuccessResponse successResponse = new SuccessResponse(data);
+    public static Success of(Object data) {
+        Success successResponse = new Success(data);
         successResponse.responseVO.setData(data);
         return successResponse;
     }
