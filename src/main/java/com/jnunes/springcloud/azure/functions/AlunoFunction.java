@@ -35,9 +35,9 @@ public class AlunoFunction {
         return idAluno -> service.delete(idAluno);
     }
 
-    @Bean("alunoList")
-    public Function<Long, ResponseVO> list() {
-        return idAluno -> service.list(idAluno);
-    }
+//    @Bean("alunoList")
+//    public Function<Long, ResponseVO> list() {
+//        return idAluno -> service.list(idAluno);
+//    }
 
 }

@@ -21,9 +21,9 @@ public class CursoHandler extends FunctionInvoker<Object, ResponseVO> {
             @HttpTrigger(name = "request",
                     methods = {HttpMethod.GET},
                     authLevel = AuthorizationLevel.ANONYMOUS)
-            HttpRequestMessage<Optional<Long>> request,
+            HttpRequestMessage<Optional<String>> request,
             final ExecutionContext context) {
-        context.getLogger().info("Java HTTP trigger processed a request.");
+//        context.getLogger().info("Java HTTP trigger processed a request.");
         return handleRequest(request.getQueryParameters(), context);
     }
 
@@ -32,9 +32,9 @@ public class CursoHandler extends FunctionInvoker<Object, ResponseVO> {
     public ResponseVO save(
             @HttpTrigger(name = "cursoSaveRequest",
                     methods = {HttpMethod.POST},
-                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Curso>> request,
+                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Object>> request,
             ExecutionContext context) {
-        return handleRequest(HandlerUtils.getCurso(request), context);
+        return handleRequest(request.getBody().orElse(null), context);
     }
 
 

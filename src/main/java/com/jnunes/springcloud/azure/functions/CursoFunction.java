@@ -1,28 +1,49 @@
 package com.jnunes.springcloud.azure.functions;
 
+import com.google.gson.Gson;
 import com.jnunes.springcloud.domain.Curso;
 import com.jnunes.springcloud.service.CursoServiceImpl;
+import com.jnunes.springcloud.suport.DateUtils;
+import com.jnunes.springcloud.suport.Utils;
 import com.jnunes.springcloud.suport.response.ResponseVO;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.function.json.GsonMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
+import static com.jnunes.springcloud.suport.response.StatusCode.*;
+import static com.jnunes.springcloud.azure.functions.ConstsKeyMap.*;
+
 @Configuration
 public class CursoFunction {
+
+    Logger logger = LoggerFactory.getLogger(CursoFunction.class);
 
     @Autowired
     private CursoServiceImpl service;
 
     @Bean("cursoSave")
-    public Function<Curso, ResponseVO> save() {
-        return curso -> service.save(curso);
+    public Function<Object, ResponseVO> save() {
+        return this::internalSave;
+    }
+
+    private ResponseVO internalSave(Object cursoObject){
+        Gson gson = new Gson();
+        Curso curso = gson.fromJson(String.valueOf(cursoObject), Curso.class);
+        return service.save(curso);
     }
 
     @Bean("cursoGet")
@@ -45,23 +66,58 @@ public class CursoFunction {
         return this::montarLista;
     }
 
-    private ResponseVO montarLista(Map<String, String> mapa) {
-        Map<String, Object> myMap = new HashMap<>();
+    private ResponseVO montarLista(Map<String, String> map) {
 
-        myMap.put("name", mapa.get("name").concat("Concatenado caralho"));
-        myMap.put("idade", toIntOrNull(mapa.get("idade")));
-        myMap.put("idInicial", toIntOrNull(mapa.get("idInicial")));
-        myMap.put("idFinal", toIntOrNull(mapa.get("idFinal")));
-        return new ResponseVO(null, 23, myMap, null);
+        Long idReferencia = Utils.toLongOrNull(map.get(ID_REFERENCIA));
+        Integer numeroRegistros = Utils.toIntOrNull(map.get(NUMERO_REGISTROS));
+        if (ObjectUtils.allNotNull(idReferencia, numeroRegistros)) {
+            return obterCursosPorId(idReferencia, numeroRegistros);
+        }
+
+        LocalDate dataInicioReferencia = DateUtils.toLocalDate(map.get(DATA_INICIO_REFERENCIA));
+        LocalDate dataFimReferencia = DateUtils.toLocalDate(map.get(DATA_FIM_REFERENCIA));
+        if (ObjectUtils.allNotNull(dataInicioReferencia, dataFimReferencia)) {
+            return obterCursosPorDataReferencia(dataInicioReferencia, dataFimReferencia);
+        }
+
+        String titulo = StringUtils.trimToNull(map.get(TITULO));
+        if (StringUtils.isNotEmpty(titulo)) {
+            return obterCursosPorTitulo(titulo);
+        }
+
+        ResponseVO response = new ResponseVO();
+        response.setMessage(Utils.getMessage("response.cursos.lista.sem.parametros"));
+        response.setStatusCode(INVALID_PARAMETER);
+        return response;
     }
 
-    private Integer toIntOrNull(String value) {
-        return Optional.ofNullable(value).map(StringUtils::trimToNull)
-                .map(this::getDigitos).map(Integer::parseInt).orElse(null);
+    private ResponseVO obterCursosPorId(Long idReferencia, Integer numeroRegistros) {
+        List<Curso> cursos = service.obterCursosPorIntervaloId(idReferencia, numeroRegistros);
+        return listCursosToResponse(cursos);
     }
 
-    private String getDigitos(String strValue) {
-        return Optional.ofNullable(strValue)
-                .map(str -> str.replaceAll("\\D", StringUtils.EMPTY)).orElse(null);
+    private ResponseVO obterCursosPorDataReferencia(LocalDate inicio, LocalDate fim) {
+        List<Curso> cursos = service.obterCursosPorDataInicioReferencia(inicio, fim);
+        return listCursosToResponse(cursos);
     }
+
+    private ResponseVO obterCursosPorTitulo(String titulo) {
+        List<Curso> cursos = service.obterCursosPorTitulo(titulo);
+        return listCursosToResponse(cursos);
+    }
+
+    private ResponseVO listCursosToResponse(List<Curso> cursos) {
+        ResponseVO response = new ResponseVO();
+
+        if (CollectionUtils.isNotEmpty(cursos)) {
+            response.setStatusCode(OK);
+            response.setData(cursos);
+            return response;
+        }
+
+        response.setMessage(Utils.getMessage("response.cursos.nao.encontrado.por.parametro"));
+        response.setStatusCode(RECORD_NOT_FOUND);
+        return response;
+    }
+
 }

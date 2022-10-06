@@ -17,7 +17,6 @@ public class HandlerUtils {
     }
 
     public static Curso getCurso(HttpRequestMessage<Optional<Curso>> request) {
-        System.out.println("Estou aqui!!");
         return request.getBody().orElse(null);
     }
 

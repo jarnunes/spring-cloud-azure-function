@@ -16,14 +16,14 @@ import java.util.Optional;
 
 public class AlunoHandler extends FunctionInvoker<Object, ResponseVO> {
 
-    @FunctionName("alunoList")
-    public ResponseVO list(
-            @HttpTrigger(name = "request",
-                    methods = {HttpMethod.GET},
-                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Long>> request,
-            ExecutionContext context) {
-        return handleRequest(HandlerUtils.getQueryParameters(request, "id"), context);
-    }
+//    @FunctionName("alunoList")
+//    public ResponseVO list(
+//            @HttpTrigger(name = "request",
+//                    methods = {HttpMethod.GET},
+//                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Long>> request,
+//            ExecutionContext context) {
+//        return handleRequest(HandlerUtils.getQueryParameters(request, "id"), context);
+//    }
 
     @FunctionName("alunoSave")
     public ResponseVO save(

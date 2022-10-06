@@ -2,6 +2,11 @@
 
 ## HTTP endpoint in Azure Functions / HTTP Trigger Urls
 
+### Basic maven commands
+    // mvn clean package
+    // mvn azure-functions:run
+    // mvn azure-functions:deploy
+
 ----
 ### Aluno Functions
 * alunoDelete : https://jnunes-spring-cloud.azurewebsites.net/api/alunodelete
@@ -17,7 +22,5 @@
 * cursoSave : https://jnunes-spring-cloud.azurewebsites.net/api/cursosave
 * cursoUpdate : https://jnunes-spring-cloud.azurewebsites.net/api/cursoupdate
 
-### Basic maven commands
-    // mvn clean package
-    // mvn azure-functions:run
-    // mvn azure-functions:deploy
+
+### 
