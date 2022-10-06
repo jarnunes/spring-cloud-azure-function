@@ -1,0 +1,18 @@
+2022-10-06 07:17:47,938 INFO org.springframework.boot.StartupInfoLogger [main] Starting SpringCloudAzureFunctionApplication using Java 11.0.14.1 on root with PID 4828 (D:\00_repositorios\02-Git\spring-cloud-azure-function\target\classes started by jarnu in D:\00_repositorios\02-Git\spring-cloud-azure-function)
+2022-10-06 07:17:47,942 INFO org.springframework.boot.SpringApplication [main] The following 1 profile is active: "dev"
+2022-10-06 07:17:48,585 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-10-06 07:17:48,681 INFO org.springframework.data.repository.config.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 85 ms. Found 3 JPA repository interfaces.
+2022-10-06 07:17:49,456 INFO org.hibernate.jpa.internal.util.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2022-10-06 07:17:49,501 INFO org.hibernate.Version [main] HHH000412: Hibernate ORM core version 5.6.11.Final
+2022-10-06 07:17:49,639 INFO org.hibernate.annotations.common.reflection.java.JavaReflectionManager [main] HCANN000001: Hibernate Commons Annotations {5.1.2.Final}
+2022-10-06 07:17:49,770 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Starting...
+2022-10-06 07:17:52,360 INFO com.zaxxer.hikari.HikariDataSource [main] HikariPool-1 - Start completed.
+2022-10-06 07:17:52,379 INFO org.hibernate.dialect.Dialect [main] HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2022-10-06 07:17:56,339 INFO org.hibernate.engine.transaction.jta.platform.internal.JtaPlatformInitiator [main] HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2022-10-06 07:17:56,348 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-10-06 07:17:57,075 INFO org.springframework.cloud.function.web.flux.FunctionHandlerMapping [main] FunctionCatalog: org.springframework.cloud.function.context.catalog.BeanFactoryAwareFunctionRegistry@2a19c36b
+2022-10-06 07:17:57,919 INFO org.springframework.boot.web.embedded.netty.NettyWebServer [main] Netty started on port 8080
+2022-10-06 07:17:57,932 INFO org.springframework.boot.StartupInfoLogger [main] Started SpringCloudAzureFunctionApplication in 10.571 seconds (JVM running for 12.191)
+2022-10-06 07:18:36,764 INFO org.springframework.orm.jpa.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2022-10-06 07:18:36,768 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2022-10-06 07:18:38,934 INFO com.zaxxer.hikari.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.

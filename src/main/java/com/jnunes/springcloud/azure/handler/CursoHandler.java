@@ -32,7 +32,7 @@ public class CursoHandler extends FunctionInvoker<Object, ResponseVO> {
     public ResponseVO save(
             @HttpTrigger(name = "cursoSaveRequest",
                     methods = {HttpMethod.POST},
-                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Object>> request,
+                    authLevel = AuthorizationLevel.ANONYMOUS) HttpRequestMessage<Optional<Curso>> request,
             ExecutionContext context) {
         return handleRequest(request.getBody().orElse(null), context);
     }

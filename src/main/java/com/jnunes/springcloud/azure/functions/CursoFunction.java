@@ -36,14 +36,8 @@ public class CursoFunction {
     private CursoServiceImpl service;
 
     @Bean("cursoSave")
-    public Function<Object, ResponseVO> save() {
-        return this::internalSave;
-    }
-
-    private ResponseVO internalSave(Object cursoObject){
-        Gson gson = new Gson();
-        Curso curso = gson.fromJson(String.valueOf(cursoObject), Curso.class);
-        return service.save(curso);
+    public Function<Curso, ResponseVO> save() {
+        return curso ->  service.save(curso);
     }
 
     @Bean("cursoGet")

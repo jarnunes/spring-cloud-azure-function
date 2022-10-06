@@ -1,6 +1,5 @@
 package com.jnunes.springcloud.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,21 +16,21 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
-    @JsonIgnore
+
     @CreatedBy
-    private String createUser;
+    private transient String createUser;
 
-    @JsonIgnore
+
     @LastModifiedBy
-    private String modifyUser;
+    private transient String modifyUser;
 
-    @JsonIgnore
+
     @CreatedDate
-    private LocalDateTime createDate;
+    private transient LocalDateTime createDate;
 
-    @JsonIgnore
+
     @LastModifiedDate
-    private LocalDateTime modifyDate;
+    private transient LocalDateTime modifyDate;
 
     @PrePersist
     protected void prePersist(){
