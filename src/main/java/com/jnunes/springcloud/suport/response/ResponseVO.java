@@ -17,7 +17,7 @@ public class ResponseVO {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
-    private Integer statusCode;
+    private Integer code;
     private Object data;
 
 

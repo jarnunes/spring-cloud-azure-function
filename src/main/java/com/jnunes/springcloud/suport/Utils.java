@@ -11,6 +11,10 @@ public class Utils {
         return StaticContextAccessor.getBean(Msg.class).get(key);
     }
 
+    public static String getMessage(String key, Object... params) {
+        return StaticContextAccessor.getBean(Msg.class).get(key, params);
+    }
+
     public static Integer toIntOrNull(String value) {
         return Optional.ofNullable(value).map(Utils::getDigitos).map(StringUtils::trimToNull)
             .map(Integer::parseInt).orElse(null);

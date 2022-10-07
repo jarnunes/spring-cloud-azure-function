@@ -36,7 +36,15 @@ public class FunctionConsts {
         return DateUtils.toLocalDate(map.get(DATA_FIM_REFERENCIA));
     }
 
-    public String getTitulo(){
+    public String getTitulo() {
         return StringUtils.trimToNull(map.get(TITULO));
+    }
+
+    public String getNome() {
+        return StringUtils.trimToNull(map.get(NOME));
+    }
+
+    public String getCurso() {
+        return StringUtils.trimToNull(map.get(CURSO));
     }
 }

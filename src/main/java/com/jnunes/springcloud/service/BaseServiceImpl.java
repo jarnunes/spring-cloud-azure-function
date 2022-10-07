@@ -17,25 +17,22 @@ public abstract class BaseServiceImpl<S extends EntityS> implements BaseService<
     public ResponseVO save(S entity) {
         try {
             repository.save(entity);
-            return Success.of(entity).post();
+            return Success.of(entity).statusOk();
         } catch (Exception e) {
             return ErrorResponse.ofException(e).setInternalServerErrorStatusCode().build();
         }
     }
 
     @Override
-    public ResponseVO get(Long id) {
-        return repository.findById(id).map(it -> Success.of(it).get())
-                .orElse(ErrorResponse.of("Nenhum registro encontrado para o id " + id)
-                        .setNotFoundStatusCode().build());
-
+    public Optional<S> get(Long id) {
+        return repository.findById(id);
     }
 
     @Override
     public ResponseVO delete(Long id) {
         try {
             repository.deleteById(id);
-            return Success.of(true).delete();
+            return Success.of(true).statusOk();
         } catch (Exception e) {
             return ErrorResponse.ofException(e).setNotFoundStatusCode().build();
         }
@@ -44,7 +41,7 @@ public abstract class BaseServiceImpl<S extends EntityS> implements BaseService<
     @Override
     public ResponseVO update(S entity) {
         try {
-            return Optional.of(repository.save(entity)).map(it -> Success.of(it).put()).orElse(null);
+            return Optional.of(repository.save(entity)).map(it -> Success.of(it).statusOk()).orElse(null);
         } catch (Exception e) {
             return ErrorResponse.ofException(e).setInternalServerErrorStatusCode().build();
         }

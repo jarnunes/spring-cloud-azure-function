@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@SequenceGenerator(initialValue = 1, name = "spcloud", sequenceName = "sequence_aluno")
 public class Aluno extends EntityS {
 
     @Column(nullable = false)

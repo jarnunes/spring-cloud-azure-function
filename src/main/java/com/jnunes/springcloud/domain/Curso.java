@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@SequenceGenerator(initialValue = 1, name = "spcloud", sequenceName = "sequence_curso")
 @Table(indexes = {@Index(columnList = "titulo, data_inicio", unique = true, name = "UK_titulo_datainicio")})
 public class Curso extends EntityS{
 

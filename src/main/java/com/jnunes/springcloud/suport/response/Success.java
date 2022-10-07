@@ -1,7 +1,7 @@
 package com.jnunes.springcloud.suport.response;
 
 
-import com.jnunes.springcloud.suport.Utils;
+import static com.jnunes.springcloud.suport.response.StatusCode.OK;
 
 public class Success extends BaseResponse {
     private Success(Object data) {
@@ -14,22 +14,8 @@ public class Success extends BaseResponse {
         return successResponse;
     }
 
-    public ResponseVO get() {
-        this.responseVO.setMessage(Utils.getMessage("response.status.success.get"));
-        return this.responseVO;
-    }
-
-    public ResponseVO post() {
-        this.responseVO.setMessage(Utils.getMessage("response.status.success.post"));
-        return this.responseVO;
-    }
-    public ResponseVO put() {
-        this.responseVO.setMessage(Utils.getMessage("response.status.success.put"));
-        return this.responseVO;
-    }
-
-    public ResponseVO delete() {
-        this.responseVO.setMessage(Utils.getMessage("response.status.success.delete"));
+    public ResponseVO statusOk() {
+        this.responseVO.setCode(OK);
         return this.responseVO;
     }
 

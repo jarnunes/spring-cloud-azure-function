@@ -15,7 +15,7 @@ import java.io.Serializable;
 public abstract class EntityS extends BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "spcloud")
     private Long id;
 
 }

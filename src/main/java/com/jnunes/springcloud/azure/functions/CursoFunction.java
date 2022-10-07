@@ -3,9 +3,9 @@ package com.jnunes.springcloud.azure.functions;
 import com.jnunes.springcloud.azure.functions.consts.FunctionConsts;
 import com.jnunes.springcloud.domain.Curso;
 import com.jnunes.springcloud.service.CursoServiceImpl;
-import com.jnunes.springcloud.suport.Utils;
+import com.jnunes.springcloud.suport.response.ErrorResponse;
 import com.jnunes.springcloud.suport.response.ResponseVO;
-import org.apache.commons.collections4.CollectionUtils;
+import com.jnunes.springcloud.suport.response.Success;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -17,12 +17,11 @@ import org.springframework.context.annotation.Configuration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
-import static com.jnunes.springcloud.suport.response.StatusCode.*;
-
 @Configuration
-public class CursoFunction {
+public class CursoFunction extends BaseFunction {
 
     Logger logger = LoggerFactory.getLogger(CursoFunction.class);
 
@@ -36,7 +35,22 @@ public class CursoFunction {
 
     @Bean("cursoGet")
     public Function<Map<String, String>, ResponseVO> get() {
-        return map -> service.get(FunctionConsts.of(map).getIdReferencia());
+        return this::getCurso;
+    }
+
+    private ResponseVO getCurso(Map<String, String> map) {
+        Long idReferencia = FunctionConsts.of(map).getIdReferencia();
+        if (Objects.nonNull(idReferencia)) {
+            return service.get(idReferencia).map(curso -> Success.of(curso).statusOk())
+                    .orElse(ErrorResponse.resourceIdNotFound(idReferencia).build());
+        }
+
+        String titulo = FunctionConsts.of(map).getTitulo();
+        if (Objects.nonNull(titulo)) {
+            return service.obterCursosPorTitulo(titulo).stream().findFirst().map(curso -> Success.of(curso).statusOk())
+                    .orElse(ErrorResponse.resourceIdentifierNotFound(titulo).build());
+        }
+        return responseToInvalidParameter();
     }
 
     @Bean("cursoUpdate")
@@ -68,45 +82,25 @@ public class CursoFunction {
             return obterCursosPorDataReferencia(dataInicioReferencia, dataFimReferencia);
         }
 
-
         String titulo = FunctionConsts.of(map).getTitulo();
         if (StringUtils.isNotEmpty(titulo)) {
             return obterCursosPorTitulo(titulo);
         }
-
-        ResponseVO response = new ResponseVO();
-        response.setMessage(Utils.getMessage("response.cursos.lista.sem.parametros"));
-        response.setStatusCode(INVALID_PARAMETER);
-        return response;
+        return responseToInvalidParameter();
     }
 
     private ResponseVO obterCursosPorId(Long idReferencia, Integer numeroRegistros) {
         List<Curso> cursos = service.obterCursosPorIntervaloId(idReferencia, numeroRegistros);
-        return listCursosToResponse(cursos);
+        return listToResponse(cursos);
     }
 
     private ResponseVO obterCursosPorDataReferencia(LocalDate inicio, LocalDate fim) {
         List<Curso> cursos = service.obterCursosPorDataInicioReferencia(inicio, fim);
-        return listCursosToResponse(cursos);
+        return listToResponse(cursos);
     }
 
     private ResponseVO obterCursosPorTitulo(String titulo) {
         List<Curso> cursos = service.obterCursosPorTitulo(titulo);
-        return listCursosToResponse(cursos);
+        return listToResponse(cursos);
     }
-
-    private ResponseVO listCursosToResponse(List<Curso> cursos) {
-        ResponseVO response = new ResponseVO();
-
-        if (CollectionUtils.isNotEmpty(cursos)) {
-            response.setStatusCode(OK);
-            response.setData(cursos);
-            return response;
-        }
-
-        response.setMessage(Utils.getMessage("cursos.nao.encontrado.por.parametro"));
-        response.setStatusCode(RECORD_NOT_FOUND);
-        return response;
-    }
-
 }
